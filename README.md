@@ -1,2 +1,2 @@
-# cs655_passwordcracker
-This repo holds the code and instructions for the Password Cracker designed for the GENI Mini Project for CS 655. 
+# CS 655: GENI Mini Project - Passwordcracker
+This repo holds the code and instructions for the Password Cracker designed for the GENI Mini Project for CS 655. The code can be found in the src directory, and it is divided based on the 3 distinct parts of our architecture: the web server, the master node, and the worker node. The corresponding GENI slice for this project can be found at: https://portal.geni.net/secure/slice.php?slice_id=1db6a9e0-700a-4f0d-902c-e24c46128756#jacks-app
