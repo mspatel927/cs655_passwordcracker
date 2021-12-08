@@ -3,6 +3,8 @@
 
 import socket
 import sys
+import hashlib
+import itertools
 
 # HOST = '127.0.0.1'
 # Set the host address to 0.0.0.0 so that it can encompass all IP addresses on the local machine
@@ -31,8 +33,28 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = connection.recv(1024)
                 if not data:
                     break
+                
+                # Convert incoming bytes to usable string (password to crack)
+                to_dehash = data.decode()
+                
+                # Our password can contain any character a-z and/or A-Z
+                sample_space = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                
+                # Using these possible characters, iterate through every possible 5-character password
+                # Infinite loop to brute force (loop forever until we find a match) 
+                for possibility in itertools.product(sample_space, repeat=5):
+                    # Find the MD5 hash of this password
+                    hashed = hashlib.md5(possibility.encode('utf-8'))
+                    hashed = hashed.hexdigest()
+
+                    # Match found!
+                    if hashed == to_dehash:
+                        # This is the password cracked
+                        cracked_password = possibility
+                        break
+
                 # Send all the data we just received back to the client, to "echo" its sent message 
-                connection.sendall(data)
+                connection.sendall(cracked_password.encode())
 
 
 
