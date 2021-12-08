@@ -8,9 +8,9 @@ import itertools
 
 # HOST = '127.0.0.1'
 # Set the host address to 0.0.0.0 so that it can encompass all IP addresses on the local machine
-HOST = '0.0.0.0'
-# Use the second command line argument accepted to be the port number that this server will run on 
-PORTNUM = int(sys.argv[1])
+# HOST = '0.0.0.0'
+HOST = '130.127.215.158'
+PORTNUM = 2000
 
 # Initialize our socket specifying the addressing scheme to be AF_INET (so we can use Internet addresses)
 # and specifying the socket type to be SOCK_STREAM so that our data will transmit as a stream of characters
@@ -44,13 +44,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 # Infinite loop to brute force (loop forever until we find a match) 
                 for possibility in itertools.product(sample_space, repeat=5):
                     # Find the MD5 hash of this password
-                    hashed = hashlib.md5(possibility.encode('utf-8'))
+                    attempt = ''.join(possibility)
+                    hashed = hashlib.md5(attempt.encode('utf-8'))
                     hashed = hashed.hexdigest()
 
                     # Match found!
                     if hashed == to_dehash:
                         # This is the password cracked
-                        cracked_password = possibility
+                        cracked_password = attempt
                         break
 
                 # Send all the data we just received back to the client, to "echo" its sent message 
