@@ -1,5 +1,11 @@
 <form action="/" method="POST">
-  <p>Name <input type="text" name="MD5 Hash to Crack" /></p>
-  <p>City <input type="text" name="Number of Worker Nodes to USe" /></p>
+  <h1>SUBMIT A PASSWORD TO CRACK</h1>
+  <h2>For 5-character alphabetic passwords (a-z, A-z)</h2>
+  <p>MD5 Hash to Crack: <input type="text" name="hash" required /></p>
+  <p>
+    Number of Worker Nodes to Use(Between 1 and 5):
+    <input type="number" name="workers" required min="1" max="5" />
+  </p>
   <p><input type="submit" value="Submit" /></p>
+  <p>Cracked Password: {{cracked}}</p>
 </form>
