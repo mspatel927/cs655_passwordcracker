@@ -5,9 +5,9 @@ The corresponding GENI slice for this project is located on the project labeled 
 
 ## Steps to Reproduce this Project
 1. Access the XML file entitled `PasswordCracker_request_rspec` in this repo and use it to reserve resources on GENI using an InstaGENI site (Clemson InstaGENI was used for purposes of this project.
-2. item 2
-
-    ```
-    Code block
-    ```
-3. item 3
+2. SSH into all of the nodes from the GENI topology, namely the master node and worker nodes 1, 2, 3, 4, and 5. 
+3. On each of the worker nodes, run the included script to retrieve its necessary code and start running it. It is idenitifed by the worker node number. In other words, on worker node 2, you should run `worker2-init.sh` to do such. 
+4. On the master node, run `masternode.sh` to retrieve the necessary code and start running it. 
+5. On your local machine, run `webpage.sh` to retrieve the code for the web interface, create a directory for and save the template for the HTML form, and begin running the web server. 
+6. At this point, the user can now go on the local host address where the web interface is located, access the HTML form, and type in the MD5 hash you wish to crack along with the number of worker nodes desired.
+7. Click submit, and after some period of time, the cracked password (if found) will appear at the bottom of the page. 
