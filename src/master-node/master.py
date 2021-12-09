@@ -4,10 +4,9 @@
 import socket
 import sys
 
-# Use the first command line argument accepted to be the host name or IP address of the worker node
-HOST_to_connect = str(sys.argv[1])      
-# Use the second command line argument accepted to be the port number of the worked node
-PORTNUM_to_connect = int(sys.argv[2])       
+# The socket addresses of the 5 worker nodes 
+HOSTS_to_connect = ['130.127.215.158','130.127.215.159','130.127.215.166','130.127.215.167','130.127.215.168']
+PORTNUM_to_connect = 2000    
 
 # The socket address of the master node itself
 HOST = '130.127.215.156'
@@ -39,18 +38,78 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 HASH = data.decode()
 
                 #--------------------------------------------------------------
-                # CONNECTION from the master node to the worker nodes 
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                # CONNECTION from the master node to worker node 1 
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock1:
                     # Connect our socket to the specified worker socket (based on the command line arguments above)
-                    sock.connect((HOST_to_connect,PORTNUM_to_connect))
+                    sock1.connect((HOSTS_to_connect[0], PORTNUM_to_connect))
                     # The message we'll send the workers is what the web interface sent the master node 
                     message = HASH
                     # Print out the message that the user has typed and wants to send to the workers to crack
                     print('Client sent', repr(message))
                     # Encode the string message into bytes and send it over to the workers across the connection
-                    sock.sendall(message.encode())
+                    sock1.sendall(message.encode())
                     # Store the response message from the workers, up to a maximum size of 1024 
-                    data = sock.recv(1024)
+                    data1 = sock1.recv(1024)
+                    if not data1:
+                        break
+                    # ---------------------------------------------
+                    # CONNECTION from the master node to worker node 2
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock2:
+                        # Connect our socket to the specified worker socket (based on the command line arguments above)
+                        sock2.connect((HOSTS_to_connect[1], PORTNUM_to_connect))
+                        # Print out the message that the user has typed and wants to send to the workers to crack
+                        print('Client sent', repr(message))
+                        # Encode the string message into bytes and send it over to the workers across the connection
+                        sock2.sendall(message.encode())
+                        data2 = sock2.recv(1024)
+                        # ---------------------------------------------
+                        # CONNECTION from the master node to worker node 3
+                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock3:
+                            # Connect our socket to the specified worker socket (based on the command line arguments above)
+                            sock3.connect((HOSTS_to_connect[2], PORTNUM_to_connect))
+                            # Print out the message that the user has typed and wants to send to the workers to crack
+                            print('Client sent', repr(message))
+                            # Encode the string message into bytes and send it over to the workers across the connection
+                            sock3.sendall(message.encode())
+                            data3 = sock3.recv(1024)  
+                            # ---------------------------------------------
+                            # CONNECTION from the master node to worker node 4
+                            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock4:
+                                # Connect our socket to the specified worker socket (based on the command line arguments above)
+                                sock4.connect((HOSTS_to_connect[3], PORTNUM_to_connect))
+                                # Print out the message that the user has typed and wants to send to the workers to crack
+                                print('Client sent', repr(message))
+                                # Encode the string message into bytes and send it over to the workers across the connection
+                                sock4.sendall(message.encode())
+                                data4 = sock4.recv(1024)
+                                # ---------------------------------------------
+                                # CONNECTION from the master node to worker node 5
+                                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock5:
+                                    # Connect our socket to the specified worker socket (based on the command line arguments above)
+                                    sock5.connect((HOSTS_to_connect[4], PORTNUM_to_connect))
+                                    # Print out the message that the user has typed and wants to send to the workers to crack
+                                    print('Client sent', repr(message))
+                                    # Encode the string message into bytes and send it over to the workers across the connection
+                                    sock5.sendall(message.encode())
+                                    data5 = sock5.recv(1024) 
+
+                if not data1:
+                    if not data2:
+                        if not data3:
+                            if not data4:
+                                if not data5:
+                                    break
+                                else:
+                                    data = data5
+                            else:
+                                data = data4
+                        else:
+                            data = data3
+                    else:
+                        data = data2
+                else:
+                    data = data1    
+
                 # A response means that the password has been cracked
                 cracked_password = data.decode()
                 # Print out the message (decoded back from bytes to string) that the worker responded with
