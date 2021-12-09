@@ -1,0 +1,3 @@
+#!/bin/bash
+wget https://github.com/mspatel927/cs655_passwordcracker/raw/main/src/worker-node/worker3.py
+python3 worker3.py
